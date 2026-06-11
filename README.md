@@ -44,9 +44,3 @@ Select the "Save Drawing to File" menu option to export a plain-text representat
 ## Notes & Tips
 - If ANSI colors don't display on Windows, run the program in Windows Terminal or enable virtual terminal processing.
 - The program stores shapes in an in-memory array (max 100 shapes). Deleting a shape shifts subsequent shapes down.
-
-## License
-Add your preferred license when publishing to GitHub.
-
----
-Created from the local `graphics_editor.c` source.
