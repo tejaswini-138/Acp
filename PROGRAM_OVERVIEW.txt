@@ -1,0 +1,181 @@
+UNDERSTANDING THE 2D GRAPHICS EDITOR PROGRAM
+=============================================
+
+What does this program do?
+
+This is a simple console/terminal-based drawing tool. Instead of clicking with a mouse,
+you use menus and type numbers to draw shapes on a text canvas. Think of it like Paint,
+but everything happens in the command line.
+
+The canvas is a 20x50 grid of characters, and shapes are drawn using asterisks (*).
+
+
+Main Components to Understand:
+==============================
+
+1. THE DATA STRUCTURES
+   - ShapeType: An enum that says what kind of shape it is (Line, Rectangle, Circle, Triangle)
+   - Shape: A struct that stores one shape's info - its ID, type, and parameters
+   - The shapes array: A list of all shapes currently on the canvas (max 100 shapes)
+
+2. THE MAIN LOOP (main function)
+   - Clears the screen
+   - Renders all shapes to the canvas
+   - Displays the canvas
+   - Shows a menu with options: Add, Modify, Delete, Clear, Save, Exit
+   - Waits for user input
+
+3. DRAWING ALGORITHMS
+   - draw_line_on_canvas(): Uses Bresenham's algorithm to draw smooth diagonal lines
+   - draw_rect_on_canvas(): Draws rectangle borders by drawing 4 lines
+   - draw_circle_on_canvas(): Uses Midpoint Circle algorithm for round shapes
+   - draw_triangle_on_canvas(): Three lines forming a triangle shape
+
+4. SHAPE MANAGEMENT
+   - add_shape(): Creates a new shape and stores it
+   - modify_shape(): Changes a shape's coordinates/size
+   - delete_shape(): Removes a shape by its ID
+   - find_shape_index_by_id(): Searches for a shape in the array
+
+5. FILE I/O
+   - save_to_file(): Saves the current canvas drawing to a .txt file
+
+
+How the Program Flows (Step by Step):
+======================================
+
+Start Program
+    |
+    v
+Enable colored text on Windows (for pretty colors)
+    |
+    v
+Main Loop:
+    1. Clear screen
+    2. Draw all shapes onto a blank canvas
+    3. Display the canvas with coordinates
+    4. Show list of all shapes currently drawn
+    5. Show menu
+    6. Get user choice (1-6)
+    
+    If choice = 1 (Add):
+        - Ask what shape type (Line, Rect, Circle, Triangle)
+        - Ask for coordinates
+        - Store the new shape in the array
+    
+    If choice = 2 (Modify):
+        - Ask for shape ID to modify
+        - Show current coordinates
+        - Ask for new coordinates
+        - Update the shape
+    
+    If choice = 3 (Delete):
+        - Ask for shape ID to delete
+        - Remove it from the array
+    
+    If choice = 4 (Clear):
+        - Remove all shapes
+    
+    If choice = 5 (Save):
+        - Write canvas to a text file
+    
+    If choice = 6 (Exit):
+        - Close program
+
+
+Key Variables to Know:
+======================
+
+shape_count = how many shapes are currently on the canvas
+next_shape_id = the ID number for the next shape (auto-increments)
+canvas[ROWS][COLS] = the 2D array representing what gets displayed
+shapes[] = the array storing all Shape structs
+
+
+Visual Example of Canvas:
+=========================
+
+    0         1         2         3         4
+    0123456789012345678901234567890123456789012345678901
+   +--------------------------------------------------+
+00 |_________________________________*________________|
+01 |_________________________________*________________|
+02 |_________________________________*________________|
+03 |___________***____________________________________|
+04 |__________*__*_____________________________________|
+05 |_________*____*____________________________________|
+   +--------------------------------------------------+
+
+^ This shows a diagonal line (*'s going down-right) and a triangle
+
+
+Input/Output Functions:
+=======================
+
+read_int_in_range(): Safely reads a number from the user with validation
+                     Makes sure input is actually a number and in the correct range
+
+read_string(): Reads text input from user, removes trailing newline
+
+display_canvas(): Shows the grid with row/column numbers to help users
+
+list_shapes(): Prints out all shapes on canvas with their IDs and parameters
+
+
+Color Codes (in terminal output):
+=================================
+
+The program uses ANSI escape codes:
+- \033[1;36m = bright cyan (for titles and prompts)
+- \033[1;32m = bright green (for success messages)
+- \033[1;31m = bright red (for error messages)
+- \033[1;33m = bright yellow (for asterisks on canvas)
+- \033[90m = dark gray (for canvas grid background)
+- \033[0m = reset to normal color
+
+
+How to Test/Visualize the Program:
+===================================
+
+1. Compile it:
+   gcc graphics_editor.c -o graphics_editor.exe -lm
+
+2. Run it:
+   ./graphics_editor.exe
+
+3. Try these steps:
+   - Choose option 1 (Add Shape)
+   - Select 1 (Line)
+   - Enter coordinates like: X1=5, Y1=5, X2=15, Y2=10
+   - Look at the canvas - you should see a diagonal line
+   - Choose option 4 (Clear Canvas) to reset
+   - Try different shapes to see how they look
+
+
+Important Details:
+==================
+
+- Arrays in this program are used to store multiple shapes
+- The union inside the Shape struct lets one shape variable hold different parameter types
+- IDs help identify shapes even if they're deleted/added in random order
+- The canvas is always re-rendered from scratch each loop (all shapes are redrawn)
+- No shapes are permanently saved unless you use the "Save Drawing" option
+- Maximum 100 shapes allowed at once
+
+
+Potential Issues/Limitations:
+=============================
+
+- Shapes can go out of bounds if coordinates are too large
+- The program checks bounds before drawing each pixel (so it won't crash)
+- Overlapping shapes just overwrite each other on the canvas
+- Modifying a shape requires remembering its ID
+- No undo/redo functionality
+
+
+That's basically it! The program is a simple demonstration of:
+- Data structures (enums, structs, unions, arrays)
+- Algorithms (line drawing, circle drawing)
+- User input handling
+- File I/O
+- Terminal graphics with ANSI codes
